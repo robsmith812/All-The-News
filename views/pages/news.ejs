@@ -8,15 +8,15 @@
         <h1>VGN Scraped</h1>
         <h2>VG News</h2>
         <div>
-            <% response.forEach(function(info) { %>
+            <% results.forEach(function(info) { %>
             <%- include('../partials/info', info); %>
             <% }); %>
         </div>
-        <div>
+        <!-- <div>
             <p><%= response.title %></p>
             <p><%= response.summary %></p>
             <a href="<% = response.link %>"></a>
-        </div>
+        </div> -->
     </div>
     <% include ../partials/script %>
 

@@ -9,7 +9,7 @@ var app = express();
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized:  true
+    saveUninitialized: true
 }));
 
 app.use(express.urlencoded())
@@ -34,8 +34,8 @@ app.get("/all", function (req, res) {
             console.log(error);
         }
         else {
-            res.json(found);
-            // res.render('pages/news', {response: response});
+            // res.json(found);
+            res.render('pages/news', { result:[0] });
         }
     });
 });
@@ -44,7 +44,7 @@ app.get("/scrape", function (req, res) {
     axios.get("https://www.ign.com/articles?tags=news").then(function (response) {
         var $ = cheerio.load(response.data);
 
-        var promises=[];
+        var promises = [];
         $(".listElmnt-blogItem").each(function (i, element) {
             var title = $(element).children().eq(0).text();
             var summary = $(element).children().eq(1).text();
@@ -65,29 +65,25 @@ app.get("/scrape", function (req, res) {
         })
         // res.send('VGN Scrapped!')
         Promise.all(promises)
-        .then( function(result){
-            console.log(result)
-            // res.json(result)
-            res.render('pages/news', {result});
-        })
+            .then(function (result) {
+                console.log(result)
+                // res.json(result)
+                res.render('pages/news', { result });
+            })
     });
 });
 
-// app.get("/scrape?", function (req, res){
-
-// })
-
-app.listen(3000, function () {
-    console.log("App running on port 3000!")
+app.listen(3001, function () {
+    console.log("App running on port 3001!")
 });
 
 function myfunction(title, summary, link) {
-    return new Promise( function(resolve, reject){
+    return new Promise(function (resolve, reject) {
         db.scrapedData.insert({
             title: title,
             summary: summary,
             link: link
-        }, function(err, res) {
+        }, function (err, res) {
             if (err) {
                 return reject()
             }
